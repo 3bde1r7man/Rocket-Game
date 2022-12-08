@@ -4,5 +4,4 @@
 int main() {
    RocketGame rocketGame;
    rocketGame.run();
-
 }

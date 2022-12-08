@@ -21,7 +21,7 @@ private:
 public:
 	Board(int size);
 	virtual ~Board() {};
-	bool updateBoard(int x, char symbol);
+	int updateBoard(int x, char symbol);
 	bool isWinner(char symbol);
 	void displayBoard();
 };

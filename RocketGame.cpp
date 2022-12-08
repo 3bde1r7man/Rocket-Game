@@ -12,7 +12,11 @@ void RocketGame::run()
 	while (true) {
 		for (int i : {0, 1}) {
 			players[i].getMove(x);
-			rocket.updateBoard(x, players[i].get_symbol());
+			while (rocket.updateBoard(x, players[i].get_symbol()) == 2)
+			{
+				players[i].getMove(x);
+			}
+			/*rocket.updateBoard(x, players[i].get_symbol());*/
 			rocket.displayBoard();
 			if (rocket.isWinner(players[i].get_symbol())) {
 				cout << players[i].getName() << " wins\n";
@@ -32,57 +36,69 @@ Board::Board(int size) {
 	}
 }
 
-bool Board::updateBoard(int x, char symbol)
+int Board::updateBoard(int x, char symbol)
 {
 	if (symbol == 'v') 
 	{
-			for (int i = 0; i < board.size()-1; i++)
-		{
-			if (board[i][x] == 'v') {
-				if (board[i + 1][x] == ' ') {
-					board[i][x] = ' ';
-					board[i + 1][x] = 'v';
-					return 1;
-				}
-				else if (board[i + 1][x] == '>' && board[i + 2][x] == ' ' && i != board.size()-1) {
-					board[i][x] = ' ';
-					board[i + 2][x] = 'v';
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
-			else
+		if (board[board.size() - 1][x] == 'v') {
+			return 2;
+		}
+		else {
+			for (int i = 0; i < board.size() - 1; i++)
 			{
-				continue;
+				if (board[i][x] == 'v') {
+					if (board[i + 1][x] == ' ') {
+						board[i][x] = ' ';
+						board[i + 1][x] = 'v';
+						return 1;
+					}
+					else if (board[i + 1][x] == '>' && board[i + 2][x] == ' ' && i != board.size() - 1) {
+						board[i][x] = ' ';
+						board[i + 2][x] = 'v';
+						return 1;
+					}
+					else {
+						return 0;
+					}
+				}
+				else
+				{
+					continue;
+				}
 			}
 		}
+		
 	}
 	else
 	{
-		for (int i = 0; i < board.size()-1; i++)
-		{
-			if (board[x][i] == '>') {
-				if (board[x][i + 1] == ' ') {
-					board[x][i] = ' ';
-					board[x][i + 1] = '>';
-					return 1;
-				}
-				else if (board[x][i + 1] == 'v' && board[x][i + 2] == ' ' && i != board.size() - 1) {
-					board[x][i] = ' ';
-					board[x][i + 2] = '>';
-					return 1;
-				}
-				else {
-					return 0;
-				}
-			}
-			else
+		if (board[x][board.size() - 1] == '>') {
+			return 2;
+		}
+		else {
+			for (int i = 0; i < board.size() - 1; i++)
 			{
-				continue;
+				if (board[x][i] == '>') {
+					if (board[x][i + 1] == ' ') {
+						board[x][i] = ' ';
+						board[x][i + 1] = '>';
+						return 1;
+					}
+					else if (board[x][i + 1] == 'v' && board[x][i + 2] == ' ' && i != board.size() - 1) {
+						board[x][i] = ' ';
+						board[x][i + 2] = '>';
+						return 1;
+					}
+					else {
+						return 0;
+					}
+				}
+				else
+				{
+					continue;
+				}
 			}
 		}
+		
 	}
 	return 0;
 }
