@@ -18,12 +18,13 @@ public:
 
 class Board {
 protected:
-	
-public:
 	vector<vector<char>> board;
+public:
 	Board() {};
 	Board(int size);
 	virtual ~Board() {};
+	vector<vector<char>>& getBoard();
+	int size();
 	int updateBoard(int x, char symbol);
 	bool isWinner(char symbol);
 	void displayBoard();
@@ -43,13 +44,13 @@ public:
 
 };
 
-class SmartPlayer : public Board {
+class SmartPlayer : public Player {
+	Board* board;
 public:
-	//SmartPlayer();
-	void getMove(int& x);
-	int minimax(Board& b, int depth, bool isMax);
-	int GoodorBad(Board& b,char symbol);
-	int BestMove(Board& b);
+	SmartPlayer(Board& b);
+	int minimax(int depth, bool isMax);
+	int GoodorBad(char symbol);
+	int BestMove();
 };
 
 
