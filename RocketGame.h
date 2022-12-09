@@ -12,13 +12,16 @@ using namespace std;
 class RocketGame
 {
 public:
-	void run();
+	void runHuman();
+	void runPC();
 };
 
 class Board {
-private:
-	vector<vector<char>> board ;
+protected:
+	
 public:
+	vector<vector<char>> board;
+	Board() {};
 	Board(int size);
 	virtual ~Board() {};
 	int updateBoard(int x, char symbol);
@@ -40,9 +43,13 @@ public:
 
 };
 
-class SmartPlayer : public Player {
+class SmartPlayer : public Board {
 public:
+	//SmartPlayer();
 	void getMove(int& x);
+	int minimax(Board& b, int depth, bool isMax);
+	int GoodorBad(Board& b,char symbol);
+	int BestMove(Board& b);
 };
 
 
