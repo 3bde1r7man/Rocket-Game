@@ -47,21 +47,14 @@ void RocketGame::runPC()
 			cout << player.getName() << " wins\n";
 			return;
 		}
-		else if (rocket.isWinner('v')) {
-			cout << "Computer wins\n";
-			return;
-		}
 		x = PC.BestMove();
-		while (rocket.updateBoard(x, 'v') == 2)
-		{
-			x = PC.BestMove();
-		}
+		//while (rocket.updateBoard(x, 'v') == 2)
+		//{
+		//	x = PC.BestMove();
+		//}
+		rocket.updateBoard(x, 'v');
 		rocket.displayBoard();
-		if (rocket.isWinner(player.get_symbol())) {
-			cout << player.getName() << " wins\n";
-			return;
-		}
-		else if (rocket.isWinner('v')) {
+		if (rocket.isWinner('v')) {
 			cout << "Computer wins\n";
 			return;
 		}
@@ -160,23 +153,23 @@ bool Board::isWinner(char symbol)
 {
 	int check{ 0 };
 	if (symbol == 'v') {
-		for (int i = 1; i < board.size() - 2; i++)
+		for (int i = 1; i < board.size() - 1; i++)
 		{
-			if (board[board.size() - 1][i] == board[board.size() - 1][i + 1] && board[board.size() - 1][i] == 'v') {
+			if (board[board.size() - 1][i] == 'v') {
 				check++;
 			}
 		}
 	}
 	else
 	{
-		for (int i = 1; i < board.size() - 2; i++)
+		for (int i = 1; i < board.size() - 1; i++)
 		{
-			if (board[i][board.size() - 1] == board[i + 1][board.size() - 1] && board[i][board.size() - 1] == '>') {
+			if (board[i][board.size() - 1] == '>') {
 				check++;
 			}
 		}
 	}
-	if (check == board.size() - 3) {
+	if (check == board.size() - 2) {
 		return 1;
 	}
 	return	0;
@@ -262,14 +255,22 @@ int SmartPlayer::GoodorBad(char symbol)
 	int check{ 0 };
 	if (symbol == 'v') {
 
-		for (int i = 1; i < board->size() - 2; i++)
+		for (int i = 1; i < board->size() - 1; i++)
 		{
-			if (board->getBoard()[board->size() - 1][i] == board->getBoard()[board->size() - 1][i + 1] && board->getBoard()[board->size() - 1][i] == 'v') {
+			if (board->getBoard()[board->size() - 1][i] == 'v') {
 				check++;
 			}
 		}
-		if (check == board->size() - 3) {
+		if (check == board->size() - 2) {
 			return 20;
+		}
+		else if (check == board->size() - 3) {
+			for (int i = 1; i < board->size() - 1; i++)
+			{
+				if (board->getBoard()[board->size() - 1][i] == ' ') {
+					return i;
+				}
+			}
 		}
 		else
 		{
@@ -279,7 +280,7 @@ int SmartPlayer::GoodorBad(char symbol)
 				{
 					if (board->getBoard()[i][j] == 'v') {
 						if (board->getBoard()[i + 1][j] == '>' && board->getBoard()[i + 2][j] == ' ' && i + 2 <= board->size() - 1 && i + 2 == board->size() - 1) {
-							return 10;
+							return 20;
 						}
 						else if (board->getBoard()[i + 1][j] == ' ' && i + 1 == board->size() - 1) {
 							return 10;
@@ -302,14 +303,23 @@ int SmartPlayer::GoodorBad(char symbol)
 	}
 	else
 	{
-		for (int i = 0; i < board->size() - 2; i++)
+		for (int i = 0; i < board->size() - 1; i++)
 		{
-			if (board->getBoard()[i][board->size() - 1] == board->getBoard()[i + 1][board->size() - 1] && board->getBoard()[i][board->size() - 1] == '>') {
+			if (board->getBoard()[i][board->size() - 1] == '>') {
 				check++;
 			}
 		}
-		if (check == board->size() - 3) {
+		if (check == board->size() - 2) {
 			return -20;
+		}
+		else if(check == board->size() - 3)
+		{
+			for (int i = 0; i < board->size() - 1; i++)
+			{
+				if (board->getBoard()[i][board->size() - 1] == ' ') {
+					return i;
+				}
+			}
 		}
 		else
 		{
@@ -355,27 +365,17 @@ int SmartPlayer::BestMove()
 		if (board->updateBoard(i, 'v') != 1) {
 			continue;
 		}
-		else
-		{
-			int move = minimax(0, 1);
-			board->getBoard() = cpboard;
-			if (move > bestval) {
-				x = i;
-				bestval = move;
-			}
+		board->getBoard() = cpboard;
+		int move = minimax(0, 1);
+		board->getBoard() = cpboard;
+		if (move > bestval) {
+			x = i;
+			bestval = move;
 		}
 		
-		/*if (move == 0) {
-			int move = 1 + rand() % (board->size() - 2);
-			while (board->updateBoard(move, 'v') == 0)
-			{
-				move = 1 + rand() % (board->size() - 2);
-			}
-			x = move;
-			bestval = 0;
-			board->getBoard() = cpboard;
-		}*/
-		
+	}
+	if (x == -1 && (GoodorBad('v') != 0 || GoodorBad('v') != 10)) {
+		x = GoodorBad('v');
 	}
 	return x;
 }
@@ -390,57 +390,42 @@ int SmartPlayer::minimax(int depth, bool isMax)
 		int best = -1000;
 		int score = GoodorBad('v');
 		if (score == 10) {
-			return score;
+			return score - depth;
 		}
 		else if (score == -10)
 		{
-			return score;
-		}
-		else {
-			
-			int move = 1 + rand() % (board->size() - 2);
-			while (board->updateBoard(move, 'v') == 0)
-			{
-				move = 1 + rand() % (board->size() - 2);
-			}
-			int score = GoodorBad('v');
-			return score;
+			return score + depth;
 		}
 		for (int i = 1; i < board->size() - 1; i++)
 		{
-			board->updateBoard(i, 'v');
+			if (board->updateBoard(i, 'v') != 1) {
+				continue;
+			}
 			best = max(best, minimax(depth + 1, !isMax));
 			board->getBoard() = cpboard;
 		}
-		return best;
+		return best - depth;
 	}
 	else
 	{
 		int best = 1000;
 		int score = GoodorBad('>');
 		if (score == 10) {
-			return score;
+			return score - depth;
 		}
 		else if (score == -10)
 		{
-			return score;
-		}
-		else {
-			int move = 1 + rand() % (board->size() - 2);
-			while (board->updateBoard(move, '>') == 0)
-			{
-				move = 1 + rand() % (board->size() - 2);
-			}
-			int score = GoodorBad('>');
-			return score;
+			return score + depth;
 		}
 		for (int i = 1; i < board->size() - 1; i++)
 		{
-			board->updateBoard(i, '>');
+			if (board->updateBoard(i, '>') == 2) {
+				continue;
+			}	
 			best = min(best, minimax(depth + 1, !isMax));
 			board->getBoard() = cpboard;
 		}
-		return best;
+		return best + depth;
 	}
 	
 }
