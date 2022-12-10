@@ -49,7 +49,8 @@ class SmartPlayer : public Player {
 public:
 	SmartPlayer(Board& b);
 	int minimax(int depth, bool isMax);
-	int GoodorBad(char symbol);
+	int Good(char symbol);
+	bool Bad(char symbol);
 	int BestMove();
 };
 
