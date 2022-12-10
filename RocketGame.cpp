@@ -283,10 +283,6 @@ int SmartPlayer::Good(char symbol) {
 					else if (j - 2 >= 0 && board->getBoard()[i][j - 2] == '>' && board->getBoard()[i][j - 1] == 'v') {
 						return true;
 					}
-
-				}
-				else {
-					continue;
 				}
 
 			}
@@ -328,14 +324,10 @@ int SmartPlayer::Good(char symbol) {
 					}
 
 				}
-				else
-				{
-					continue;
-				}
 
 			}
 		}
-		return false;
+		return true;
 	}
 
 }
