@@ -16,7 +16,6 @@ void RocketGame::runHuman()
 			{
 				players[i].getMove(x);
 			}
-			/*rocket.updateBoard(x, players[i].get_symbol());*/
 			rocket.displayBoard();
 			if (rocket.isWinner(players[i].get_symbol())) {
 				cout << players[i].getName() << " wins\n";
