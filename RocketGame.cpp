@@ -16,7 +16,6 @@ void RocketGame::runHuman()
 			{
 				players[i].getMove(x);
 			}
-			/*rocket.updateBoard(x, players[i].get_symbol());*/
 			rocket.displayBoard();
 			if (rocket.isWinner(players[i].get_symbol())) {
 				cout << players[i].getName() << " wins\n";
@@ -288,39 +287,6 @@ int SmartPlayer::Good(char symbol) {
 		}
 	}
 }
-
-bool SmartPlayer::Bad(char symbol) {
-	if (symbol == 'v') {
-		for (int i = 0; i < board->size() - 1; i++)
-		{
-			for (int j = 0; j < board->size() - 1; j++)
-			{
-				if (board->getBoard()[i][j] == 'v') {
-					if (board->getBoard()[i + 1][j] == '>' && board->getBoard()[i + 2][j] == '>') {
-						return true;
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		for (int i = 0; i < board->size() - 1; i++)
-		{
-			for (int j = 0; j < board->size() - 1; j++)
-			{
-				if (board->getBoard()[j][i] == '>') {
-					if (board->getBoard()[j][i + 1] == 'v' && board->getBoard()[j][i + 2] == '>') {
-						return true;
-					}
-				}
-			}
-		}
-	}
-	return false;
-}
-
-
 
 
 
