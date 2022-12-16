@@ -37,7 +37,7 @@ protected:
 public:
 	Player(char symbol);
 	Player(int order, char symbol);
-	virtual ~Player() {};
+	virtual ~Player() {}
 	string getName();
 	char get_symbol();
 	virtual void getMove(int& x);
@@ -48,7 +48,8 @@ class SmartPlayer : public Player {
 	Board* board;
 public:
 	SmartPlayer(Board& b);
-	int minimax(int depth, bool isMax);
+	virtual ~SmartPlayer() {}
+	int minimax(int depth, int alpha, int beta, bool isMax);
 	int Good(char symbol);
 	bool Bad(char symbol);
 	int BestMove();
