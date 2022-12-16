@@ -173,10 +173,10 @@ bool Board::isWinner(char symbol)
 
 void Board::displayBoard()
 {
-	cout << "               ";
+	cout << "              ";
 	for (int i = 0; i < board.size() - 2; i++)
 	{
-		cout << i + 1 << "    ";
+		cout << i + 1 << "     ";
 	}
 	cout << '\n';
 	for (int i = 0; i < board.size() + 1; i++)
