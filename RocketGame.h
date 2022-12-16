@@ -52,7 +52,6 @@ public:
 	int minimax(int depth, int alpha, int beta, bool isMax);
 	int Good(char symbol);
 	bool Bad(char symbol);
-	int BestMove();
 };
 
 
