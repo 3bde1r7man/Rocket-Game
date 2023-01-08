@@ -339,7 +339,6 @@ int SmartPlayer::minimax(int depth, int alpha, int beta, bool isMax)
 		int finali = -1;
 		for (int i = 1; i < board->size() - 1; i++)
 		{
-			board->getBoard() = cpboard;
 			if (board->updateBoard(i, 'v') == 1 || Good('v') != 0) {
 				int score = minimax(depth + 1, alpha, beta, !isMax);
 				alpha = max(score, alpha);
@@ -359,7 +358,7 @@ int SmartPlayer::minimax(int depth, int alpha, int beta, bool isMax)
 			}
 		}
 		board->updateBoard(finali, 'v');
-		return best ;
+		return best;
 	}
 	else
 	{
@@ -367,7 +366,6 @@ int SmartPlayer::minimax(int depth, int alpha, int beta, bool isMax)
 		int finali = -1;
 		for (int i = 1; i < board->size() - 1; i++)
 		{
-			board->getBoard() = cpboard;
 			if (board->updateBoard(i, '>') == 1 || Good('>') != 0) {
 				int score =  minimax(depth + 1, alpha, beta, !isMax);
 				beta = min(score, beta);
